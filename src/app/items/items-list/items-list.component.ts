@@ -1,31 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+
 import { ItemService } from '../shared/item.service';
+
 import { Item } from '../shared/item';
-import { FirebaseListObservable } from 'angularfire2/database';
+
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'items-list',
   templateUrl: './items-list.component.html',
-  styleUrls: ['./items-list.component.scss']
+  styleUrls: ['./items-list.component.scss'],
 })
 export class ItemsListComponent implements OnInit {
 
-  items: FirebaseListObservable<Item[]>;
-
+  items: Observable<Item[]>;
   showSpinner = true;
 
-
-  constructor(private itemSvc: ItemService) { }
+  constructor(private itemService: ItemService) {
+    this.items = this.itemService.getItemsList();
+  }
 
   ngOnInit() {
-    this.items = this.itemSvc.getItemsList({ limitToLast: 5 })
-    this.items.subscribe(() => this.showSpinner = false)
+    this.items.subscribe((x) => {
+      this.showSpinner = false;
+    });
   }
 
   deleteItems() {
-    this.itemSvc.deleteAll()
+    this.itemService.deleteAll();
   }
-
-
-
 }

@@ -1,10 +1,9 @@
-<div *ngIf="!auth.currentUser; else alreadyLoggedIn">
+<div *ngIf="!(auth.user | async); else alreadyLoggedIn">
 
   <h3>Social Login</h3>
 
-
     <button (click)="signInWithGoogle()" class="button btn-social btn-google">
-      <i class="fa fa-google-plus fa-lg"></i> Connect Google
+      <i class="fa fa-google fa-lg"></i> Connect Google
     </button>
 
     <button (click)="signInWithGithub()" class="button btn-social btn-github" disabled>
@@ -29,13 +28,9 @@
 
     <hr>
 
-
     <user-form></user-form>
 
 </div>
-
-
-
 
 <ng-template #alreadyLoggedIn>
   <p class="text-success">
